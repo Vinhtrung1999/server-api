@@ -1,0 +1,60 @@
+<html>
+
+<head>
+    <title>BodyMail</title>
+</head>
+
+<body style="color: #000;">
+    <div style="background-color: blue; color: #ffffff; text-align: center; padding: 3px; font-weight: 800;">TVTEdu
+        Services - Notification</div>
+    <div style="color: red; padding: 2px; font-weight: 600;">This is an automationcally generated email. Please do not
+        reply this message</div>
+    <hr>
+    <div>
+        <div style="display: flex; padding: 5px;">
+            <div style="width: 120px;"><b>Transaction ID</b></div>
+            <div>
+                <%= transactionInfo.transactionID %>
+            </div>
+        </div>
+        <div style="display: flex; padding: 5px;">
+            <div style="width: 120px;"><b>Registration ID</b></div>
+            <div>
+                <%= transactionInfo.registrationID %>
+            </div>
+        </div>
+        <div style="display: flex; padding: 5px;">
+            <div style="width: 120px;"><b>Error code</b></div>
+            <div>
+                <%= transactionInfo.errorCode %>
+            </div>
+        </div>
+        <div style="display: flex; padding: 5px;">
+            <div style="width: 120px;"><b>Error message</b></div>
+            <div>
+                <%= transactionInfo.errorMessage %>
+            </div>
+        </div>
+        <div style="display: flex; padding: 5px;">
+            <div style="width: 120px;"><b>BILL TO CRS ID</b></div>
+            <div>
+                <%= transactionInfo.billID %>
+            </div>
+        </div>
+        <div style="display: flex; padding: 5px;">
+            <div style="width: 120px;"><b>SHIP TO CRS ID</b></div>
+            <div>
+                <%= transactionInfo.shipID %>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div style="color: red; padding: 2px; font-weight: 600;">This is an automated notification sent by TVTEdu Services
+    </div>
+    <div style="background-color: blue; font-weight: 400; color: #ffffff; font-size: .6rem; padding: 2px;">
+        <div style="text-align: start">TVTEdu Services</div>
+        <div style="text-align: end">@2013 hrl ... ...</div>
+    </div>
+</body>
+
+</html>

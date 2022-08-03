@@ -2,7 +2,22 @@ const express = require('express')
 const app = express()
 const port = 3000
 const cors = require('cors')
+const nodemailer = require('nodemailer')
 var data = require('./data')
+const ejs = require("ejs")
+
+var transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+        user: "trungtran.110199@gmail.com",
+        pass: "wesxnquszceigwel"
+    },
+    tls: {
+        rejectUnauthorized: false
+    }
+})
 
 app.use(cors())
 app.use(express.json())
@@ -110,6 +125,30 @@ app.delete('/deleteData', (req, res) => {
         if (check) {
             data = data.filter(val => val.id !== id)
             return res.json({ code: 0, message: 'delete success', data: check })
+        }
+    }
+    return res.json({ code: 1, message: 'Error' })
+})
+
+//========*** Day 3 (Send mail) ***=======================================
+app.post('/send-mail', async (req, res) => {
+    //receiver: email of receiver
+    //transactionInfo: info of transaction: transaction id, registration id,...
+    let { receiver, transactionInfo } = req.body
+    if (receiver && transactionInfo.transactionID && transactionInfo.registrationID) {
+        const data = await ejs.renderFile(__dirname + "/views/bodyMail.ejs", { transactionInfo }) //html file -> text
+        let mailOptions = {
+            from: 'trungtran.110199@gmail.com',
+            to: receiver,
+            subject: 'Sending Email using Node.js',
+            html: data
+        }
+        try {
+            let result = await transporter.sendMail(mailOptions)
+            return res.json({ code: 0, message: 'Mail has been sent', data: transactionInfo })
+        }
+        catch (err) {
+            console.log(err)
         }
     }
     return res.json({ code: 1, message: 'Error' })
