@@ -3,12 +3,10 @@ const app = express()
 const port = 3000
 const cors = require('cors')
 var data = require('./data')
-// const xmlparser = require('express-xml-bodyparser')
 
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-// app.use(xmlparser())
 
 app.get('/', (req, res) => {
     return res.json({ code: 0, message: 'Welcome to api' })
@@ -53,6 +51,10 @@ app.get('/getData', (req, res) => {
     }
     return res.json({ code: 0, length: data.length, data })
 
+})
+
+app.get('/getAllData', (req, res) => {
+    return res.json({ code: 0, length: data.length, data })
 })
 
 app.get('/getDataByAction', (req, res) => {
