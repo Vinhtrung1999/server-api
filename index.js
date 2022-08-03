@@ -11,8 +11,8 @@ var transporter = nodemailer.createTransport({
     port: 465,
     secure: true,
     auth: {
-        user: "trungtran.110199@gmail.com",
-        pass: "wesxnquszceigwel"
+        user: "admin@gmail.com", //email admin
+        pass: "app password" //app pwd
     },
     tls: {
         rejectUnauthorized: false
@@ -138,7 +138,7 @@ app.post('/send-mail', async (req, res) => {
     if (receiver && transactionInfo.transactionID && transactionInfo.registrationID) {
         const data = await ejs.renderFile(__dirname + "/views/bodyMail.ejs", { transactionInfo }) //html file -> text
         let mailOptions = {
-            from: 'trungtran.110199@gmail.com',
+            from: 'admin@gmail.com', //email admin
             to: receiver,
             subject: 'Sending Email using Node.js',
             html: data
