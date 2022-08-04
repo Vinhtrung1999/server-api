@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "lab --coverage --verbose --timeout 10000",
+    "start": "node server.js",
+    "debug": "node --debug=5858 server.js",
+    "lint": "eslint .",
+    "lint:errors": "eslint . --quiet",
+    "setup": "node ./scripts/setup.js"
   },
   "keywords": [],
   "author": "",

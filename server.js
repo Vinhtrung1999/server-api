@@ -154,4 +154,9 @@ app.post('/send-mail', async (req, res) => {
     return res.json({ code: 1, message: 'Error' })
 })
 
-app.listen(port, () => console.log(`http://localhost:${port}`))
+app.listen(port, () => console.log(`
+-----------------------------------------------------------------------
+     API server running at: http://localhost:${port}
+     Runtime environment: development
+-----------------------------------------------------------------------
+`))
