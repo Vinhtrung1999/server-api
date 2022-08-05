@@ -1,16 +1,8 @@
-const nodemailer = require('nodemailer')
-const { mailAdmin, pwdApp, mailReceiver } = require('../services/config/base')
-const sendMail = require('../services/mailConfig/mail')
+const { mailReceiver } = require('../services/config/base')
+const mail = require('../services/mailConfig/mail')
+const http = require('../http')
 var data = require('../data')
-var transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    auth: {
-        user: mailAdmin, //email admin
-        pass: pwdApp //app pwd
-    }
-})
+
 //=====READ===================
 getData = (req, res) => {
     let page = req.query.page || 0
@@ -53,11 +45,28 @@ let createData = async (req, res) => {
         let check = data.find(val => val.id == news.id)
         if (!check) {
             data = [...data, news]
-            let result = await sendMail(mailReceiver, 'CREATE DATA', 'You have been created a post:', news, transporter)
-            return res.send({ code: 0, message: 'create success', data: news })
+            let result = await http({
+                method: 'post',
+                url: 'http://localhost:3000/sendMail',
+                data: {
+                    receiver: mailReceiver,
+                    subject: 'CREATE DATA',
+                    msg: 'You have been created a post:',
+                    news: news
+                },
+                responseType: 'application/json'
+            })
+            if (result.data.code === 0)
+                return res.send({ code: 0, message: 'create success', data: news })
+            else
+                return res.send({ code: 1, message: result.data.message })
+        }
+        else {
+            return res.send({ code: 1, message: 'Your data was created' })
         }
     }
-    return res.send({ code: 1, message: 'Your data was created' })
+    return res.send({ code: 1, message: 'ERR! Your data not enough params' })
+
 }
 
 //======UPDATE===========
@@ -71,8 +80,21 @@ let updateData = async (req, res) => {
                     data[index] = newsUpdate
                 }
             })
-            let result = await sendMail(mailReceiver, 'UPDATE DATA', 'You have been updated a post:', newsUpdate, transporter)
-            return res.send({ code: 0, message: 'update success', data: newsUpdate })
+            let result = await http({
+                method: 'post',
+                url: 'http://localhost:3000/sendMail',
+                data: {
+                    receiver: mailReceiver,
+                    subject: 'UPDATE DATA',
+                    msg: 'You have been updated a post:',
+                    news: newsUpdate
+                },
+                responseType: 'application/json'
+            })
+            if (result.data.code === 0)
+                return res.send({ code: 0, message: 'update success', data: newsUpdate })
+            else
+                return res.send({ code: 1, message: result.data.message })
         }
         else {
             return res.send({ code: 1, message: 'ERR! Your data doesn\'t exist' })
@@ -88,8 +110,21 @@ let deleteData = async (req, res) => {
         let check = data.find(val => val.id == id)
         if (check) {
             data = data.filter(val => val.id !== id)
-            let result = await sendMail(mailReceiver, 'DELETE DATA', 'You have been deleted a post:', check, transporter)
-            return res.send({ code: 0, message: 'delete success', data: check })
+            let result = await http({
+                method: 'post',
+                url: 'http://localhost:3000/sendMail',
+                data: {
+                    receiver: mailReceiver,
+                    subject: 'DELETE DATA',
+                    msg: 'You have been deleted a post:',
+                    news: check
+                },
+                responseType: 'application/json'
+            })
+            if (result.data.code === 0)
+                return res.send({ code: 0, message: 'delete success', data: check })
+            else
+                return res.send({ code: 1, message: result.data.message })
         }
         else {
             return res.send({ code: 1, message: 'ERR! Your data doesn\'t exist' })

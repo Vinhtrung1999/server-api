@@ -1,5 +1,17 @@
 const ejs = require("ejs")
-let sendMail = async (receiver, subject, msg, news, transporter) => {
+const nodemailer = require('nodemailer')
+const { mailAdmin, pwdApp } = require('../../services/config/base')
+
+let mail = async (receiver, subject, msg, news) => {
+    var transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+            user: mailAdmin, //email admin
+            pass: pwdApp //app pwd
+        }
+    })
     const bodymail = await ejs.renderFile(__dirname + "/../mailBody/bodyMail.ejs", { msg, news }) //html file -> text
     let mailOptions = {
         to: receiver,
@@ -10,4 +22,4 @@ let sendMail = async (receiver, subject, msg, news, transporter) => {
     return result
 }
 
-module.exports = sendMail
+module.exports = mail

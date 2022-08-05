@@ -1,5 +1,7 @@
+const http = require('./http')
+const CRUD = require('./controllers/CRUD')
+const sendMail = require('./controllers/sendmail')
 let routes = (app) => {
-    const CRUD = require('./controllers/CRUD')
     //======READ========
     app.get('/getData', CRUD.getData)
     app.get('/getAllData', CRUD.getAllData)
@@ -13,6 +15,9 @@ let routes = (app) => {
 
     //======DELETE=======
     app.delete('/deleteData', CRUD.deleteData)
+
+    //======send mail========
+    app.post('/sendMail', sendMail.sendMail)
 }
 
 module.exports = routes
